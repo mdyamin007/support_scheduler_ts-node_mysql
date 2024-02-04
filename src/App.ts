@@ -4,7 +4,7 @@ import http from 'http';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json';
-import registerRoutes from './routes';
+import registerRoutes from './routes/index';
 import addErrorHandler from './middleware/error-handler';
 
 export default class App {
@@ -37,7 +37,7 @@ export default class App {
 	private routes(): void {
 		this.express.get('/', this.basePathRoute);
 		this.express.get('/web', this.parseRequestHeader, this.basePathRoute);
-		this.express.use('/', registerRoutes());
+		this.express.use('/api/v1/', registerRoutes());
 	}
 
 	/**

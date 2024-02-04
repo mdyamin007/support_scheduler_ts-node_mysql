@@ -3,19 +3,19 @@
     "info": {
         "description": "Node Typescript Boilerplate for Microservices. Skeleton for Node.js Apps written in TypeScript (with Setup Instructions for ESLint, Prettier, and Husky)",
         "version": "1.0.0",
-        "title": "Node Boilerplate"
+        "title": "Support Scheduler"
     },
     "host": "",
     "basePath": "",
     "tags": [{
-        "name": "node-boilerplate",
-        "description": "Node Typescript Boilerplate"
+        "name": "support-scheduler",
+        "description": "Support Scheduler"
     }],
     "schemes": ["http", "https"],
     "paths": {
-        "/system/info": {
+        "/api/v1/system/info": {
             "get": {
-                "tags": ["node-boilerplate"],
+                "tags": ["support-scheduler"],
                 "summary": "get system status",
                 "description": "",
                 "responses": {
@@ -29,9 +29,9 @@
                 "security": []
             }
         },
-        "/system/time": {
+        "/api/v1/system/time": {
             "get": {
-                "tags": ["node-boilerplate"],
+                "tags": ["support-scheduler"],
                 "summary": "get server time",
                 "description": "",
                 "responses": {
@@ -45,9 +45,9 @@
                 "security": []
             }
         },
-        "/system/usage": {
+        "/api/v1/system/usage": {
             "get": {
-                "tags": ["node-boilerplate"],
+                "tags": ["support-scheduler"],
                 "summary": "get server usage",
                 "description": "",
                 "responses": {
@@ -61,9 +61,25 @@
                 "security": []
             }
         },
-        "/system/process": {
+        "/api/v1/system/process": {
             "get": {
-                "tags": ["node-boilerplate"],
+                "tags": ["support-scheduler"],
+                "summary": "get server process",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/user/": {
+            "get": {
+                "tags": ["support-scheduler"],
                 "summary": "get server process",
                 "description": "",
                 "responses": {

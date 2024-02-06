@@ -24,11 +24,11 @@ export default class UserController {
   }
 
   async findAll(req: Request, res: Response) {
-    const username = typeof req.query.username === "string" ? req.query.username : "";
+    // const username = typeof req.query.username === "string" ? req.query.username : "";
 
     try {
-      const Users = await userRepository.retrieveAll({ username: username });
-
+      const Users = await userRepository.retrieveAll();
+      console.log(Users)
       res.status(200).send(Users);
     } catch (err) {
       res.status(500).send({

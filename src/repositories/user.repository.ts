@@ -30,15 +30,15 @@ class UserRepository implements IUserRepository {
         });
     }
 
-    retrieveAll(searchParams: {username?: string}): Promise<User[]> {
+    retrieveAll(): Promise<User[]> {
         let query: string = "SELECT * FROM users";
-        let condition: string = "";
+        // let condition: string = "";
       
-        if (searchParams?.username)
-          condition += `LOWER(username) LIKE '%${searchParams.username}%'`
+        // if (searchParams?.username)
+        //   condition += `LOWER(username) LIKE '%${searchParams.username}%'`
       
-        if (condition.length)
-          query += " WHERE " + condition;
+        // if (condition.length)
+        //   query += " WHERE " + condition;
       
         return new Promise((resolve, reject) => {
           connection.query<User[]>(query, (err, res) => {

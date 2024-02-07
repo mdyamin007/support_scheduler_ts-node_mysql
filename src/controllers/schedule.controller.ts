@@ -70,18 +70,20 @@ export default class ScheduleController {
 // }
 
 async getScheduleByMonth(req: Request, res: Response) {
+    const year: number = Number(req.params.year);
     const month: number = Number(req.params.month);
 
     try {
-      const schedule = await scheduleRepository.retrieveByMonth(month);
+      const schedule = await scheduleRepository.retrieveByMonth(year, month);
+      // console.log(schedule.length)
 
-      if (schedule) res.status(200).send(schedule);
+      if (schedule.length) res.status(200).send(schedule);
       else {
         //   res.status(404).send({
         //     message: `Cannot find User with username=${username}.`
         //   });
         const peoples = JSON.parse(JSON.stringify(await userRepository.retrieveAll()));
-        // console.log(peoples)
+        // console.log(peoples) 
         let peopleArray: string[] = []
         peoples.forEach(people => {
           peopleArray.push(people.ID)
@@ -91,18 +93,21 @@ async getScheduleByMonth(req: Request, res: Response) {
         // console.log(assignments);
         Object.keys(assignments).forEach( async (key: string) => {
           let user_id_1 = assignments[key][0];
+          let user_id_2 = assignments[key][1];
           let schedule1: any = { date: key, user_id: user_id_1 };
-          let schedule2: any = { date: key, user_id: user_id_1};
+          let schedule2: any = { date: key, user_id: user_id_2};
           await scheduleRepository.save(schedule1);
           await scheduleRepository.save(schedule2);
         })
-        const schedule = await scheduleRepository.retrieveByMonth(month);
-        console.log(schedule)
-        if (schedule) res.status(200).send(schedule);
+        // const schedule = await scheduleRepository.retrieveByMonth(month);
+        // console.log(schedule.length);
+        // if (schedule.length) res.status(200).send(schedule);
+        res.status(201).send("No data found! Schedule Initiated for that month!");
       }
     } catch (err) {
       res.status(500).send({
-        message: `Error retrieving User with month=${month}.`
+        message: `Error retrieving User with month=${month}.`,
+        error: err
       });
     }
 }

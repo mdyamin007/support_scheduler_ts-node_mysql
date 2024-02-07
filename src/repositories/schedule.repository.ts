@@ -8,7 +8,7 @@ interface IScheduleRepository {
 //   retrieveByUsername(username: string): Promise<User | undefined>;
 //   retrieveById(id: number): Promise<User | undefined>;
 //   update(user: User): Promise<number>;
-  retrieveByMonth(month: number): Promise<Schedule | undefined>;
+  retrieveByMonth(year: number,month: number): Promise<Schedule[] | undefined>;
   // delete(username: string): Promise<number>;
   // deleteAll(): Promise<number>;
 }
@@ -64,14 +64,14 @@ class ScheduleRepository implements IScheduleRepository {
 
     
 
-    retrieveByMonth(month: number): Promise<Schedule> {
+    retrieveByMonth(year: number, month: number): Promise<Schedule[]> {
         return new Promise((resolve, reject) => {
             connection.query<Schedule[]>(
-            "SELECT * FROM schedule",
-            [month],
+            "SELECT * FROM schedule WHERE MONTH(date) = ? AND YEAR(date) = ?",
+            [month, year],
             (err, res) => {
                 if (err) reject(err);
-                else resolve(res?.[0]);
+                else resolve(res);
             }
             );
         });

@@ -13,7 +13,7 @@ class UserRoutes {
     
 
     // Retrieve a month data by month
-    this.router.get("/:month", this.controller.getScheduleByMonth);
+    this.router.get("/:year/:month", this.controller.getScheduleByMonth);
 
     
   }

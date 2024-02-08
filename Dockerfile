@@ -1,4 +1,4 @@
-FROM node:iron-bookworm-slim
+FROM node:20
 
 # Create a new user named "nodeuser"
 RUN useradd --user-group --create-home --system --skel /dev/null --shell /bin/false nodeuser
@@ -6,15 +6,15 @@ RUN useradd --user-group --create-home --system --skel /dev/null --shell /bin/fa
 # Switch to the new user
 USER nodeuser
 
-ENV NODE_ENV production
-WORKDIR /home/nodeuser/app
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
 COPY package.json ./
 COPY tsconfig.json ./
 COPY swagger.json ./
-COPY .env ./
 COPY .env.prod ./
 COPY src/ ./src
+
 RUN npm install --ignore-scripts
-RUN npm run build:prod
-EXPOSE 8080 
+RUN npm run build
+EXPOSE 80
 CMD npm start

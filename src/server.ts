@@ -2,6 +2,15 @@ import * as http from 'http';
 import { AddressInfo } from 'net';
 import App from './App';
 import logger from './lib/logger';
+import dotenv from "dotenv"
+
+if (process.env.NODE_ENV === 'production') {
+	dotenv.config({ path: '.env.prod' });
+} else {
+	dotenv.config({ path: '.env' });
+}
+
+console.log("Running on " + process.env.NODE_ENV)
 
 const app: App = new App();
 let server: http.Server;

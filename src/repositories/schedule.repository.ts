@@ -9,6 +9,8 @@ interface IScheduleRepository {
 //   retrieveById(id: number): Promise<User | undefined>;
 //   update(user: User): Promise<number>;
   retrieveByMonth(year: number,month: number): Promise<Schedule[] | undefined>;
+  retrieveByUsername(username: string): Promise<Schedule[] | undefined>;
+  retrieveByUsernameMonth(username: string,month: number): Promise<Schedule[] | undefined>;
   // delete(username: string): Promise<number>;
   // deleteAll(): Promise<number>;
 }
@@ -44,25 +46,32 @@ class ScheduleRepository implements IScheduleRepository {
       });
   }
 
-    // retrieveAll(searchParams: {username?: string}): Promise<User[]> {
-    //     let query: string = "SELECT * FROM users";
-    //     let condition: string = "";
-      
-    //     if (searchParams?.username)
-    //       condition += `LOWER(username) LIKE '%${searchParams.username}%'`
-      
-    //     if (condition.length)
-    //       query += " WHERE " + condition;
-      
-    //     return new Promise((resolve, reject) => {
-    //       connection.query<User[]>(query, (err, res) => {
-    //         if (err) reject(err);
-    //         else resolve(res);
-    //       });
-    //     });
-    //   }
+    retrieveByUsername(username: string): Promise<Schedule[]> {
+        return new Promise((resolve, reject) => {
+            connection.query<Schedule[]>(
+                "SELECT * FROM schedule WHERE user_id = ( SELECT ID FROM users WHERE username = ? )",
+            [username],
+            (err, res) => {
+                if (err) reject(err);
+                else resolve(res);
+            }
+            );
+        });
+    }
 
-    
+    retrieveByUsernameMonth(username: string, month: number): Promise<Schedule[]> {
+        return new Promise((resolve, reject) => {
+            connection.query<Schedule[]>(
+                "SELECT * FROM schedule WHERE MONTH(date) = ? AND user_id = ( SELECT ID FROM users WHERE username = ? )",
+            [month, username],
+            (err, res) => {
+                if (err) reject(err);
+                else resolve(res);
+            }
+            );
+        })
+    }
+
 
     retrieveByMonth(year: number, month: number): Promise<Schedule[]> {
         return new Promise((resolve, reject) => {

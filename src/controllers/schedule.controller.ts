@@ -69,6 +69,44 @@ export default class ScheduleController {
 //   }
 // }
 
+async getScheduleByUserMonth(req: Request,res: Response) {
+  const username: string = req.params.username;
+  const month: number = Number(req.params.month);
+  try {
+    const schedule = await scheduleRepository.retrieveByUsernameMonth(username, month);
+    // console.log(schedule)
+    if(schedule) res.status(200).send(schedule);
+    else {
+      res.status(404).send({
+          message: `Cannot find user with username=${username} and month=${month}.`}
+      );
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: `Error retrieving user with username=${username}.`,
+      error: err.message
+    });
+  }
+}
+
+async getScheduleByUser(req: Request, res: Response) {
+  const username: string = req.params.username;
+  try {
+    const schedule = await scheduleRepository.retrieveByUsername(username);
+    if(schedule) res.status(200).send(schedule);
+    else {
+      res.status(404).send({
+          message: `Cannot find user with username=${username}.`}
+      );
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: `Error retrieving user with username=${username}.`,
+      error: err.message
+    });
+  }
+}
+
 async getScheduleByMonth(req: Request, res: Response) {
     const year: number = Number(req.params.year);
     const month: number = Number(req.params.month);
@@ -107,7 +145,7 @@ async getScheduleByMonth(req: Request, res: Response) {
     } catch (err) {
       res.status(500).send({
         message: `Error retrieving User with month=${month}.`,
-        error: err
+        error: err.message
       });
     }
 }

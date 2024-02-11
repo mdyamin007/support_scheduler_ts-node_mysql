@@ -1,13 +1,13 @@
-# [Node-Typescript-Boilerplate](https://blog.santoshshinde.com/skeleton-for-node-js-apps-written-in-typescript-444fa1695b30)  [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=santoshshinde2012_node-boilerplate&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=santoshshinde2012_node-boilerplate)
+# Support Scheduler [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=santoshshinde2012_node-boilerplate&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=santoshshinde2012_node-boilerplate)
 
-Skeleton for Node.js applications written in TypeScript
+Backend/API of Support Scheduler web application written in Node.js, TypeScript, MySQL
 
 
-## Purpose
+<!-- ## Purpose
 
 Our main purpose with this Skeleton is to start server application with node js and typescript.
 
-Try it!! I am happy to hear your feedback or any kind of new features.
+Try it!! I am happy to hear your feedback or any kind of new features. -->
 
 ## Common Features
 
@@ -36,24 +36,27 @@ Try it!! I am happy to hear your feedback or any kind of new features.
 - [x] `helmet`
 - [x] `http-status-codes`
 - [x] `winston`, `@types/winston`
+- [x] `swagger`, `swagger-ui-express`
 
-# [Start the application](https://blog.santoshshinde.com/skeleton-for-node-js-apps-written-in-typescript-444fa1695b30)
+# Start the application
 
 ![Workflow](https://github.com/santoshshinde2012/node-boilerplate/blob/master/wiki/environment.jpg?raw=true)
 
 ## Start The application in Development Mode
 
-- Clone the Application `git clone https://github.com/santoshshinde2012/node-boilerplate.git`
+- Install MySQL and run in 3306 port or set .env file accordingly
+- Clone the Application `git clone <url>`
 - Install the dependencies `npm install`
 - Start the application `npm run dev`
 
 ## Start The application in Production Mode
 
-- Install the dependencies `npm install`
-- Create the build `npm run build`
-- Start the application `npm run start`
-- Before starting make sure to update your `.env` values for your refrence just check `.env.example`
-
+- Install docker application
+- Build the images and run using `docker compose up`
+- Before starting make sure to create and update your `.env.prod` values for your refrence just check `.env.example`
+- Visit \<Your IP>:3307 and login to phpmyadmin using username `root` and password is blank.
+- Copy all the contents from db.sql file and paste it to the SQL tab
+- Done, now visit your server IP
 
 ## Project Structure
 
@@ -65,6 +68,12 @@ Try it!! I am happy to hear your feedback or any kind of new features.
 | **src/components**                | REST API Components & Controllers  |
 | **src/lib**                       | Reusable utilises and library source code like a logger|
 | **src/middleware/**               | Express Middlewares like error handler feature |
+| **src/config/**               | Database connection configuration |
+| **src/controllers/**               | Express Controllers to handle request |
+| **src/models/**               | Database Schema Models for MySQL |
+| **src/repositories/**               | Functions for handling Queries of Database |
+| **src/routes/**               | Express Routes for different endpoints |
+| **src/utils/**               | Algorithm to generate schedule |
 | **build/**                        | Compiled source files will be placed here |
 | **tests/**                        | Test cases will be placed here |
 | **tests/helpers/**                | Helpers for test cases will be placed here  |
@@ -122,13 +131,4 @@ chmod ug+x .git/hooks/*
 - Avoid other known vulnerabilities
 - Additional considerations
 
-### 3. Tutorials 
-- [Skeleton for Node.js Apps written in TypeScript (with Setup Instructions for ESLint, Prettier, and Husky)](https://blog.santoshshinde.com/skeleton-for-node-js-apps-written-in-typescript-444fa1695b30)
-- [Global Error and Response Handler in Node JS with Express and Typescript](https://blog.santoshshinde.com/global-error-and-response-handler-in-node-js-with-express-and-typescript-913ec06d74b3)
-- [Testing with Jest in TypeScript and Node.js for Beginners](https://blog.santoshshinde.com/beginners-guide-to-testing-jest-with-node-typescript-1f46a1b87dad)
-- [Static Code Analysis for Node.js and TypeScript Project using SonarQube](https://blog.santoshshinde.com/static-code-analysis-for-node-js-and-typescript-project-using-sonarqube-8f90799add06)
-- [Visualization of Node.js Event Emitter](https://blog.santoshshinde.com/visualization-of-node-js-event-emitter-4f7c9fe3a477)
-
-<hr/>
-
-### Please connect with me on Twitter [@shindesan2012](https://twitter.com/shindesan2012) & [https://blog.santoshshinde.com](https://blog.santoshshinde.com/)
+### Please connect with me on LinkedIn [@mdyamin007](https://linkedin.com/in/mdyamin007) & [mdyamin007.github.io](https://mdyamin007.github.io/)

@@ -1,109 +1,479 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Node Typescript Boilerplate for Microservices. Skeleton for Node.js Apps written in TypeScript (with Setup Instructions for ESLint, Prettier, and Husky)",
+        "description": " Skeleton for Node.js Apps written in TypeScript",
         "version": "1.0.0",
         "title": "Support Scheduler"
     },
     "host": "",
-    "basePath": "",
-    "tags": [{
-        "name": "support-scheduler",
-        "description": "Support Scheduler"
-    }],
-    "schemes": ["http", "https"],
+    "basePath": "/api/v1",
+    "tags": [
+        {
+            "name": "system-info",
+            "description": "System Information"
+        },
+        {
+            "name": "support-scheduler",
+            "description": "Support Scheduler"
+        },
+        {
+            "name": "user",
+            "description": "User"
+        },
+        {
+            "name": "schedule",
+            "description": "Schedule"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
     "paths": {
-        "/api/v1/system/info": {
+        "/system/info": {
             "get": {
-                "tags": ["support-scheduler"],
+                "tags": [
+                    "system-info"
+                ],
                 "summary": "get system status",
                 "description": "",
                 "responses": {
                     "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/ApiResponse"
-                        }
+                        "description": "successful operation"
                     }
                 },
                 "security": []
             }
         },
-        "/api/v1/system/time": {
+        "/system/time": {
             "get": {
-                "tags": ["support-scheduler"],
+                "tags": [
+                    "system-info"
+                ],
                 "summary": "get server time",
                 "description": "",
                 "responses": {
                     "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/ApiResponse"
-                        }
+                        "description": "successful operation"
                     }
                 },
                 "security": []
             }
         },
-        "/api/v1/system/usage": {
+        "/system/usage": {
             "get": {
-                "tags": ["support-scheduler"],
+                "tags": [
+                    "system-info"
+                ],
                 "summary": "get server usage",
                 "description": "",
                 "responses": {
                     "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/ApiResponse"
-                        }
+                        "description": "successful operation"
                     }
                 },
                 "security": []
             }
         },
-        "/api/v1/system/process": {
+        "/system/process": {
             "get": {
-                "tags": ["support-scheduler"],
+                "tags": [
+                    "system-info"
+                ],
                 "summary": "get server process",
                 "description": "",
                 "responses": {
                     "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/ApiResponse"
-                        }
+                        "description": "successful operation"
                     }
                 },
                 "security": []
             }
         },
-        "/api/v1/user/": {
+        "/user/": {
             "get": {
-                "tags": ["support-scheduler"],
-                "summary": "get server process",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "user"
+                ],
+                "summary": "get all users",
                 "description": "",
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            },
+            "post": {
+                "summary": "create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "user"
+                ],
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "description": "the user to create",
                         "schema": {
-                            "$ref": "#/definitions/ApiResponse"
+                            "type": "object",
+                            "required": [
+                                "username"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
                         }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete all users",
+                "tags": [
+                    "support-scheduler",
+                    "user"
+                ],
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/user/{username}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "user"
+                ],
+                "summary": "get user info",
+                "description": "get user info by username",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "type": "string",
+                        "required": true,
+                        "description": "username of the user to get"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            },
+            "delete": {
+                "summary": "delete a user",
+                "tags": [
+                    "support-scheduler",
+                    "user"
+                ],
+                "description": "delete a user by username",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "type": "string",
+                        "required": true,
+                        "description": "username of the user to get"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
                     }
                 },
                 "security": []
             }
-        }
-    },
-    "securityDefinitions": {},
-    "definitions": {
-        "ApiResponse": {
-            "type": "object",
-            "properties": {
+        },
+        "/user/{username_1}/{username_2}": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "user"
+                ],
+                "summary": "update a user",
+                "description": "update a user's username",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username_1",
+                        "type": "string",
+                        "required": true,
+                        "description": "username of the user to be updated"
+                    },
+                    {
+                        "in": "path",
+                        "name": "username_2",
+                        "type": "string",
+                        "required": true,
+                        "description": "new username"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/schedule/year/{year}/month/{month}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "schedule"
+                ],
+                "summary": "get schedule by month",
+                "description": "get schedule by month and year",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "year",
+                        "type": "number",
+                        "required": true,
+                        "description": "year to get schedule"
+                    },
+                    {
+                        "in": "path",
+                        "name": "month",
+                        "type": "number",
+                        "required": true,
+                        "description": "month to get schedule"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/schedule/year/{year}/": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "schedule"
+                ],
+                "summary": "get schedule by year",
+                "description": "get schedule by year",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "year",
+                        "type": "number",
+                        "required": true,
+                        "description": "year to get schedule"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/schedule/user/{username}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "schedule"
+                ],
+                "summary": "get schedule by user",
+                "description": "get schedule by username",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "type": "string",
+                        "required": true,
+                        "description": "username of the user to get schedule"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/schedule/user/{username}/month/{month}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "schedule"
+                ],
+                "summary": "get schedule by user and month",
+                "description": "get schedule by username and month",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "type": "string",
+                        "required": true,
+                        "description": "username of the user to get schedule"
+                    },
+                    {
+                        "in": "path",
+                        "name": "month",
+                        "type": "number",
+                        "required": true,
+                        "description": "month to get schedule"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/schedule/update/{date}/{username_1}/{username_2}": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "schedule"
+                ],
+                "summary": "update a schedule",
+                "description": "update a schedule by username",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "date",
+                        "type": "string",
+                        "required": true,
+                        "description": "date in YYYY-MM-DD format"
+                    },
+                    {
+                        "in": "path",
+                        "name": "username_1",
+                        "type": "string",
+                        "required": true,
+                        "description": "username of the user which schedule needs to be updated"
+                    },
+                    {
+                        "in": "path",
+                        "name": "username_2",
+                        "type": "string",
+                        "required": true,
+                        "description": "username of the new user who needs to be assigned"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/schedule/delete/{date}": {
+            "delete": {
+                "summary": "delete a schedule",
+                "tags": [
+                    "support-scheduler",
+                    "schedule"
+                ],
+                "description": "delete a schedule by date",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "date",
+                        "type": "string",
+                        "required": true,
+                        "description": "date (YYYY-MM-DD) to delete schedule"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/schedule/add/": {
+            "post": {
+                "summary": "add a new schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "support-scheduler",
+                    "schedule"
+                ],
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "schedule",
+                        "description": "the date and username of schedule",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "date",
+                                "username"
+                            ],
+                            "properties": {
+                                "date": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
             }
         }
-    },
-    "externalDocs": {
-        "description": "Find out more about Node Typescript Boilerplate",
-        "url": "https://blog.santoshshinde.com/skeleton-for-node-js-apps-written-in-typescript-444fa1695b30"
     }
 }

@@ -6,12 +6,12 @@ interface IScheduleRepository {
   save(schedule: Schedule): Promise<Schedule>;
 //   retrieveAll(searchParams: {username: string}): Promise<User[]>;
 //   retrieveByUsername(username: string): Promise<User | undefined>;
-//   retrieveById(id: number): Promise<User | undefined>;
+  retrieveById(id: number): Promise<Schedule | undefined>;
   updateSchedule(date: string,username_1: string,username_2: string): Promise<number>;
   retrieveByMonth(year: number,month: number): Promise<Schedule[] | undefined>;
   retrieveByUsername(username: string): Promise<Schedule[] | undefined>;
   retrieveByUsernameMonth(username: string,month: number): Promise<Schedule[] | undefined>;
-  // delete(username: string): Promise<number>;
+  delete(date: string): Promise<number>;
   // deleteAll(): Promise<number>;
 }
 
@@ -19,15 +19,12 @@ class ScheduleRepository implements IScheduleRepository {
 
     save(schedule: Schedule): Promise<Schedule> {
         return new Promise((resolve, reject) => {
-            connection.query<ResultSetHeader>(
+            connection.query<any>(
             "INSERT INTO schedule (date, user_id) VALUES(?, ?)",
             [schedule.date, schedule.user_id],
             (err, res) => {
                 if (err) reject(err);
-                else
-                this.retrieveById(res.insertId)
-                    .then((schedule) => resolve(schedule!))
-                    .catch(reject);
+                else resolve(res);
             }
             );
         });
@@ -72,6 +69,19 @@ class ScheduleRepository implements IScheduleRepository {
         })
     }
 
+    retrieveByYear(year: number): Promise<Schedule[]> {
+        return new Promise((resolve, reject) => {
+            connection.query<Schedule[]>(
+            "SELECT * FROM schedule WHERE YEAR(date) = ?",
+            [year],
+            (err, res) => {
+                if (err) reject(err);
+                else resolve(res);
+            }
+            );
+        });
+    }
+
 
     retrieveByMonth(year: number, month: number): Promise<Schedule[]> {
         return new Promise((resolve, reject) => {
@@ -99,18 +109,18 @@ class ScheduleRepository implements IScheduleRepository {
         });
     }
 
-    // delete(username: string): Promise<number> {
-    //     return new Promise((resolve, reject) => {
-    //       connection.query<ResultSetHeader>(
-    //         "DELETE FROM users WHERE username = ?",
-    //         [username],
-    //         (err, res) => {
-    //           if (err) reject(err);
-    //           else resolve(res.affectedRows);
-    //         }
-    //       );
-    //     });
-    // }
+    delete(date: string): Promise<number> {
+        return new Promise((resolve, reject) => {
+          connection.query<ResultSetHeader>(
+            "DELETE FROM schedule WHERE date = ?",
+            [date],
+            (err, res) => {
+              if (err) reject(err);
+              else resolve(res.affectedRows);
+            }
+          );
+        });
+    }
 
     // deleteAll(): Promise<number> {
     //     return new Promise((resolve, reject) => {

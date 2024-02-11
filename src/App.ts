@@ -26,9 +26,9 @@ export default class App {
 		this.express.use(addErrorHandler);
 
 		// In a development/test environment, Swagger will be enabled.
-		if (process.env.NODE_ENV !== 'prod') {
+		// if (process.env.NODE_ENV !== 'prod') {
 			this.setupSwaggerDocs();
-		}
+		// }
 	}
 
 	/**

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Schedule from "../models/schedule.model";
+import User from "../models/user.model";
 import scheduleRepository from "../repositories/schedule.repository";
 import userRepository from "../repositories/user.repository";
 import algorithm from "../utils/algorithm"
@@ -49,35 +50,48 @@ export default class ScheduleController {
 //     }
 //   }
 
-// async create(req: Request, res: Response) {
-//   if (!req.body.username) {
-//     res.status(400).send({
-//       message: "Content can not be empty!"
-//     });
-//     return;
-//   }
+  async create(req: Request, res: Response) {
+    if (!req.body.username) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+      return;
+    }
 
-//   try {
-//     const user: User = req.body;
-//     const savedUser = await userRepository.save(user);
+    try {
+      const date : string = req.body.date;
+      const username: string = req.body.username;
+      const user: User = await userRepository.retrieveByUsername(username);
+      console.log(user)
+      const schedule: any = {
+        date,
+        user_id: user.ID
+      }
+      console.log(schedule);
+      
+      const savedSchedule = await scheduleRepository.save(schedule);
+      console.log(savedSchedule)
 
-//     res.status(201).send(savedUser);
-//   } catch (err) {
-//     res.status(500).send({
-//       message: "Some error occurred while retrieving users."
-//     });
-//   }
-// }
+      res.status(201).send("Schedule created successfully!");
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while creating schedule.",
+        error: err.message
+      });
+    }
+  }
 
 async getScheduleByUserMonth(req: Request,res: Response) {
   const username: string = req.params.username;
   const month: number = Number(req.params.month);
   try {
     const schedule = await scheduleRepository.retrieveByUsernameMonth(username, month);
-    schedule.forEach(obj => {
+    for (let obj of schedule) {
       const date = new Date(obj.date);
       obj.date = date.toLocaleDateString('en-US');
-    })
+      const user = await userRepository.retrieveById(obj.user_id);
+      obj.username = user.username;
+    }
     console.log(schedule)
     if(schedule) res.status(200).send(schedule);
     else {
@@ -97,10 +111,12 @@ async getScheduleByUser(req: Request, res: Response) {
   const username: string = req.params.username;
   try {
     const schedule = await scheduleRepository.retrieveByUsername(username);
-    schedule.forEach(obj => {
+    for (let obj of schedule) {
       const date = new Date(obj.date);
       obj.date = date.toLocaleDateString('en-US');
-    })
+      const user = await userRepository.retrieveById(obj.user_id);
+      obj.username = user.username;
+    }
     console.log(schedule)
     if(schedule) res.status(200).send(schedule);
     else {
@@ -116,18 +132,44 @@ async getScheduleByUser(req: Request, res: Response) {
   }
 }
 
+async getScheduleByYear(req: Request, res: Response) {
+  const year: number = Number(req.params.year);
+  try {
+    const schedule = await scheduleRepository.retrieveByYear(year);
+    for (let obj of schedule) {
+      const date = new Date(obj.date);
+      obj.date = date.toLocaleDateString('en-US');
+      const user = await userRepository.retrieveById(obj.user_id);
+      obj.username = user.username;
+    }
+    console.log(schedule)
+    if(schedule) res.status(200).send(schedule);
+    else {
+      res.status(404).send({
+          message: `Cannot find year with year=${year}.`}
+      );
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: `Error retrieving year with year=${year}.`,
+      error: err.message
+    });
+  }
+}
+
 async getScheduleByMonth(req: Request, res: Response) {
     const year: number = Number(req.params.year);
     const month: number = Number(req.params.month);
 
     try {
       const schedule = await scheduleRepository.retrieveByMonth(year, month);
-      schedule.forEach(obj => {
+      for (let obj of schedule) {
         const date = new Date(obj.date);
         obj.date = date.toLocaleDateString('en-US');
-      })
+        const user = await userRepository.retrieveById(obj.user_id);
+        obj.username = user.username;
+      }
       console.log(schedule)
-      // console.log(schedule.length)
 
       if (schedule.length) res.status(200).send(schedule);
       else {
@@ -164,6 +206,10 @@ async getScheduleByMonth(req: Request, res: Response) {
     }
 }
 
+
+
+
+
   async update(req: Request, res: Response) {
     let username_1: string = req.params.username_1;
     let username_2: string = req.params.username_2;
@@ -183,32 +229,34 @@ async getScheduleByMonth(req: Request, res: Response) {
       }
     } catch (err) {
       res.status(500).send({
-        message: `Error updating User with username=${username_1}.`
+        message: `Error updating User with username=${username_1}.`,
+        error: err.message
       });
     }
   }
 
-//   async delete(req: Request, res: Response) {
-//     const username: string = req.params.username;
+  async delete(req: Request, res: Response) {
+    const date: string = req.params.date;
 
-//     try {
-//       const num = await scheduleRepository.delete(username);
-
-//       if (num == 1) {
-//         res.send({
-//           message: "User was deleted successfully!"
-//         });
-//       } else {
-//         res.send({
-//           message: `Cannot delete User with username=${username}. Maybe User was not found!`,
-//         });
-//       }
-//     } catch (err) {
-//       res.status(500).send({
-//         message: `Could not delete User with username==${username}.`
-//       });
-//     }
-//   }
+    try {
+      const num = await scheduleRepository.delete(date);
+      console.log(num);
+      if (num >= 1) {
+        res.send({
+          message: "Schedule was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Schedule with date=${date}. Maybe Schedule was not found!`,
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        message: `Could not delete Schedule with date=${date}.`,
+        error: err.message
+      });
+    }
+  }
 
 //   async deleteAll(req: Request, res: Response) {
 //     try {

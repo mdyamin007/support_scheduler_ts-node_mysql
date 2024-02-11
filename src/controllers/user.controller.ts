@@ -56,11 +56,12 @@ export default class UserController {
   }
 
   async update(req: Request, res: Response) {
-    let user: User = req.body;
-    user.username = req.params.username;
+    let username_1: string = req.params.username_1;
+    let username_2: string = req.params.username_2;
 
     try {
-      const num = await userRepository.update(user);
+      const num = await userRepository.update(username_1, username_2);
+      console.log(num)
 
       if (num == 1) {
         res.send({
@@ -68,12 +69,12 @@ export default class UserController {
         });
       } else {
         res.send({
-          message: `Cannot update User with username=${user.username}. Maybe User was not found or req.body is empty!`
+          message: `Cannot update User with username=${username_1}. Maybe User was not found or req.body is empty!`
         });
       }
     } catch (err) {
       res.status(500).send({
-        message: `Error updating User with username=${user.username}.`
+        message: `Error updating User with username=${username_1}.`
       });
     }
   }
@@ -83,6 +84,7 @@ export default class UserController {
 
     try {
       const num = await userRepository.delete(username);
+      console.log(num);
 
       if (num == 1) {
         res.send({
@@ -107,7 +109,8 @@ export default class UserController {
       res.send({ message: `${num} Users were deleted successfully!` });
     } catch (err) {
       res.status(500).send({
-        message: "Some error occurred while removing all Users."
+        message: "Some error occurred while removing all Users.",
+        error: err.message
       });
     }
   }

@@ -7,7 +7,7 @@ interface IScheduleRepository {
 //   retrieveAll(searchParams: {username: string}): Promise<User[]>;
 //   retrieveByUsername(username: string): Promise<User | undefined>;
 //   retrieveById(id: number): Promise<User | undefined>;
-//   update(user: User): Promise<number>;
+  updateSchedule(date: string,username_1: string,username_2: string): Promise<number>;
   retrieveByMonth(year: number,month: number): Promise<Schedule[] | undefined>;
   retrieveByUsername(username: string): Promise<Schedule[] | undefined>;
   retrieveByUsernameMonth(username: string,month: number): Promise<Schedule[] | undefined>;
@@ -86,18 +86,18 @@ class ScheduleRepository implements IScheduleRepository {
         });
     }
 
-    // update(user: User): Promise<number> {
-    //     return new Promise((resolve, reject) => {
-    //       connection.query<ResultSetHeader>(
-    //         "UPDATE users SET username = ?",
-    //         [user.username],
-    //         (err, res) => {
-    //           if (err) reject(err);
-    //           else resolve(res.affectedRows);
-    //         }
-    //       );
-    //     });
-    // }
+    updateSchedule(date: string,username_1: string,username_2: string): Promise<number> {
+        return new Promise((resolve, reject) => {
+          connection.query<ResultSetHeader>(
+            "UPDATE schedule SET user_id = (SELECT ID FROM users WHERE username = ?) WHERE date = ? AND user_id = (SELECT ID FROM users WHERE username = ?)",
+            [username_2, date, username_1],
+            (err, res) => {
+              if (err) reject(err);
+              else resolve(res.affectedRows);
+            }
+          );
+        });
+    }
 
     // delete(username: string): Promise<number> {
     //     return new Promise((resolve, reject) => {

@@ -74,7 +74,11 @@ async getScheduleByUserMonth(req: Request,res: Response) {
   const month: number = Number(req.params.month);
   try {
     const schedule = await scheduleRepository.retrieveByUsernameMonth(username, month);
-    // console.log(schedule)
+    schedule.forEach(obj => {
+      const date = new Date(obj.date);
+      obj.date = date.toLocaleDateString('en-US');
+    })
+    console.log(schedule)
     if(schedule) res.status(200).send(schedule);
     else {
       res.status(404).send({
@@ -93,6 +97,11 @@ async getScheduleByUser(req: Request, res: Response) {
   const username: string = req.params.username;
   try {
     const schedule = await scheduleRepository.retrieveByUsername(username);
+    schedule.forEach(obj => {
+      const date = new Date(obj.date);
+      obj.date = date.toLocaleDateString('en-US');
+    })
+    console.log(schedule)
     if(schedule) res.status(200).send(schedule);
     else {
       res.status(404).send({
@@ -113,6 +122,11 @@ async getScheduleByMonth(req: Request, res: Response) {
 
     try {
       const schedule = await scheduleRepository.retrieveByMonth(year, month);
+      schedule.forEach(obj => {
+        const date = new Date(obj.date);
+        obj.date = date.toLocaleDateString('en-US');
+      })
+      console.log(schedule)
       // console.log(schedule.length)
 
       if (schedule.length) res.status(200).send(schedule);
@@ -128,7 +142,7 @@ async getScheduleByMonth(req: Request, res: Response) {
         });
         // console.log(peopleArray)
         const assignments: Iassignment = algorithm(peopleArray, 2024, month);
-        // console.log(assignments);
+        console.log(assignments);
         Object.keys(assignments).forEach( async (key: string) => {
           let user_id_1 = assignments[key][0];
           let user_id_2 = assignments[key][1];
@@ -150,28 +164,29 @@ async getScheduleByMonth(req: Request, res: Response) {
     }
 }
 
-//   async update(req: Request, res: Response) {
-//     let user: User = req.body;
-//     user.username = req.params.username;
+  async update(req: Request, res: Response) {
+    let username_1: string = req.params.username_1;
+    let username_2: string = req.params.username_2;
+    let date: string = req.params.date;
 
-//     try {
-//       const num = await scheduleRepository.update(user);
+    try {
+      const num = await scheduleRepository.updateSchedule(date, username_1, username_2);
 
-//       if (num == 1) {
-//         res.send({
-//           message: "User was updated successfully."
-//         });
-//       } else {
-//         res.send({
-//           message: `Cannot update User with username=${user.username}. Maybe User was not found or req.body is empty!`
-//         });
-//       }
-//     } catch (err) {
-//       res.status(500).send({
-//         message: `Error updating User with username=${user.username}.`
-//       });
-//     }
-//   }
+      if (num == 1) {
+        res.send({
+          message: `Schedule was updated successfully for date:${date} and user=${username_1} with user=${username_2}`
+        });
+      } else {
+        res.send({
+          message: `Cannot update User with username=${username_1}. Maybe User was not found or req.body is empty!`
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        message: `Error updating User with username=${username_1}.`
+      });
+    }
+  }
 
 //   async delete(req: Request, res: Response) {
 //     const username: string = req.params.username;

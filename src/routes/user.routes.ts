@@ -20,7 +20,7 @@ class UserRoutes {
     this.router.get("/:username", this.controller.findOne);
 
     // Update a User with username
-    this.router.put("/:username", this.controller.update);
+    this.router.put("/:username_1/:username_2", this.controller.update);
 
     // Delete a User with username
     this.router.delete("/:username", this.controller.delete);

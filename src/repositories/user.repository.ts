@@ -7,7 +7,7 @@ interface IUserRepository {
   retrieveAll(searchParams: {username: string}): Promise<User[]>;
   retrieveByUsername(username: string): Promise<User | undefined>;
   retrieveById(id: number): Promise<User | undefined>;
-  update(user: User): Promise<number>;
+  update(username_1: string,username_2: string): Promise<number>;
   delete(username: string): Promise<number>;
   deleteAll(): Promise<number>;
 }
@@ -74,11 +74,11 @@ class UserRepository implements IUserRepository {
         });
     }
 
-    update(user: User): Promise<number> {
+    update(username_1: string,username_2: string): Promise<number> {
         return new Promise((resolve, reject) => {
           connection.query<ResultSetHeader>(
-            "UPDATE users SET username = ?",
-            [user.username],
+            "UPDATE users SET username = ? WHERE username = ?",
+            [username_2, username_1],
             (err, res) => {
               if (err) reject(err);
               else resolve(res.affectedRows);

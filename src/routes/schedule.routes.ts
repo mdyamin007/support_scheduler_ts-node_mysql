@@ -16,6 +16,7 @@ class UserRoutes {
     this.router.get("/year/:year/month/:month", this.controller.getScheduleByMonth);
     this.router.get("/user/:username", this.controller.getScheduleByUser);
     this.router.get("/user/:username/month/:month", this.controller.getScheduleByUserMonth);
+    this.router.put("/update/:date/:username_1/:username_2", this.controller.update)
 
     
   }

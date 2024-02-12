@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export default {
-    HOST: process.env.DB_HOST,
+    HOST: "mysqldb",
     USER: process.env.DB_USER,
     DB: "support_scheduler"
   };

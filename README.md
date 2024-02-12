@@ -53,8 +53,8 @@ Try it!! I am happy to hear your feedback or any kind of new features. -->
 
 - Install docker application
 - Build the images and run using `docker compose up`
-- Before starting make sure to create and update your `.env.prod` values for your refrence just check `.env.example`
-- Visit \<Your IP>:3307 and login to phpmyadmin using username `root` and password is blank.
+- Before starting make sure to create and update your `.env.prod` values for your reference just check `.env.example`
+- Visit \<Your IP>:3307 and login to phpmyadmin using these credentials: server `mysqldb` username `root` and password is blank.
 - Copy all the contents from db.sql file and paste it to the SQL tab
 - Done, now visit your server IP
 

@@ -4,5 +4,6 @@ import dbConfig from "../config/db.config";
 export default mysql.createConnection({
   host: dbConfig.HOST,
   user: dbConfig.USER,
-  database: dbConfig.DB
+  database: dbConfig.DB,
+  password: ""
 });

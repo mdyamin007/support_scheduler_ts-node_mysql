@@ -96,6 +96,19 @@ class ScheduleRepository implements IScheduleRepository {
         });
     }
 
+    retrieveByDay(day: number, year: number, month: number): Promise<Schedule[]> {
+        return new Promise((resolve, reject) => {
+            connection.query<Schedule[]>(
+            "SELECT * FROM schedule WHERE DAY(date) = ? AND MONTH(date) = ? AND YEAR(date) = ?",
+            [day, month, year],
+            (err, res) => {
+                if (err) reject(err);
+                else resolve(res);
+            }
+            );
+        });
+    }
+
     updateSchedule(date: string,username_1: string,username_2: string): Promise<number> {
         return new Promise((resolve, reject) => {
           connection.query<ResultSetHeader>(

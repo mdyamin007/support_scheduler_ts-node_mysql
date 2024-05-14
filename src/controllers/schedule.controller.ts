@@ -206,6 +206,37 @@ async getScheduleByMonth(req: Request, res: Response) {
     }
 }
 
+async getScheduleByDay(req: Request, res: Response) {
+  const year: number = Number(req.params.year);
+  const month: number = Number(req.params.month);
+  const day: number = Number(req.params.day);
+
+  // console.log(day)
+
+  try {
+    const schedule = await scheduleRepository.retrieveByDay(day, year, month);
+    for (let obj of schedule) {
+      const date = new Date(obj.date);
+      obj.date = date.toLocaleDateString('en-US');
+      const user = await userRepository.retrieveById(obj.user_id);
+      obj.username = user.username;
+    }
+    console.log(schedule)
+
+    if (schedule.length) res.status(200).send(schedule);
+    else {
+        res.status(404).send({
+          message: `Cannot find schedule with day=${day}/${month}/${year}.`
+        });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: `Error retrieving User with month=${month}.`,
+      error: err.message
+    });
+  }
+}
+
 
 
 
